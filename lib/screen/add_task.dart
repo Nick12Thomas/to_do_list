@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:to_do_list/models/task_data.dart';
 
 class AddScreen extends StatelessWidget {
-  late String newTaskTitle;
-  final Function addTaskCallback;
-
-  AddScreen(this.addTaskCallback);
   @override
   Widget build(BuildContext context) {
+    String newTaskTitle = ''; // Initialize with an empty string
 
     return Container(
       child: Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
+            const Text(
               "Add Task",
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -22,51 +21,58 @@ class AddScreen extends StatelessWidget {
                   fontSize: 30,
                   fontWeight: FontWeight.w500),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             TextField(
               autofocus: true,
               textAlign: TextAlign.center,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 enabledBorder: UnderlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Colors.grey), // Default underline color
+                  borderSide: BorderSide(color: Colors.grey), // Default underline color
                 ),
                 focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Colors.blue), // Blue underline when focused
+                  borderSide: BorderSide(color: Colors.blue), // Blue underline when focused
                 ),
               ),
-              onChanged: (newValue){
-                newTaskTitle=newValue;
+              onChanged: (newValue) {
+                newTaskTitle = newValue; // Update the newTaskTitle as user types
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             TextButton(
               onPressed: () {
-                addTaskCallback(newTaskTitle);
+                // Check if the new task title is not empty before adding it
+                if (newTaskTitle.isNotEmpty) {
+                  Provider.of<TaskData>(context, listen: false)
+                      .addTask(newTaskTitle); // Add the task using the provider
+                  Navigator.pop(context); // Close the bottom sheet after adding task
+                } else {
+                  // Optional: Show a snackbar or an alert if the task is empty
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Please enter a task title!'),
+                    ),
+                  );
+                }
               },
-              child: Text(
-                'Add',
-                style:
-                    TextStyle(color: Colors.white), // Set text color explicitly
-              ),
               style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all(
-                    Colors.blueAccent), // Corrected from WidgetStateProperty
+                backgroundColor: WidgetStateProperty.all(Colors.blueAccent),
                 padding: WidgetStateProperty.all(
-                    EdgeInsets.symmetric(horizontal: 20, vertical: 10)),
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10)),
                 shape: WidgetStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.zero, // Sharp edges for boxy appearance
+                  const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero, // Sharp edges for boxy appearance
                   ),
                 ),
               ),
-            )
+              child: const Text(
+                'Add',
+                style: TextStyle(color: Colors.white), // Set text color explicitly
+              ),
+            ),
           ],
         ),
       ),
