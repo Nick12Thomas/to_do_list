@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:to_do_list/models/task_data.dart';
 import 'package:to_do_list/screen/add_task.dart';
 import 'package:to_do_list/widgets/task_view.dart';
+import 'package:to_do_list/models/task.dart';
 
-class TaskScreen extends StatelessWidget {
+class TaskScreen extends StatefulWidget {
   const TaskScreen({super.key});
 
+  @override
+  State<TaskScreen> createState() => _TaskScreenState();
+}
+
+
+class _TaskScreenState extends State<TaskScreen> {
   Widget builderBottom(BuildContext context){
-    return AddScreen();
+    return  AddScreen((newTaskTitle){
+      // setState(() {
+      //
+      // tasks.add(Task(name: newTaskTitle));
+      // });
+      Navigator.pop(context);
+    });
   }
 
   @override
@@ -20,11 +35,11 @@ class TaskScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.only(top: 60, left: 30, right: 30, bottom: 30),
-            child: const Column(
+            padding: const EdgeInsets.only(top: 60, left: 30, right: 30, bottom: 30),
+            child:  Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 30,
                   child: Icon(
                     Icons.list,
@@ -32,10 +47,10 @@ class TaskScreen extends StatelessWidget {
                     color: Colors.blueAccent,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Text(
+                const Text(
                   "TO-DO",
                   style:  TextStyle(
                       color: Colors.white60,
@@ -43,8 +58,8 @@ class TaskScreen extends StatelessWidget {
                       fontSize: 50),
                 ),
                 Text(
-                  "12 task remaining",
-                  style: TextStyle(
+                  '${Provider.of<TaskData>(context).tasks.length} task remaining',
+                  style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 20),
@@ -54,12 +69,12 @@ class TaskScreen extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: TaskView(),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20))
               ),
+              child: TaskView(Provider.of(context)),
             ),
           )
         ],
