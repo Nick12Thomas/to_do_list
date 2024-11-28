@@ -5,6 +5,8 @@ import 'package:to_do_list/widgets/task_tile.dart';
 
 
 class TaskView extends StatelessWidget {
+  const TaskView({super.key});
+
 
 
   @override

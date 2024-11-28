@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:to_do_list/models/task.dart';
 
@@ -13,7 +14,6 @@ class TaskData extends ChangeNotifier{
 }
   int get taskCount{
     return _tasks.length;
-    notifyListeners();
   }
 
   void addTask(String newTaskTitle){
@@ -26,8 +26,10 @@ class TaskData extends ChangeNotifier{
     task.toggle();
     notifyListeners();
   }
-  void deleteData(Task task){
-    _tasks.remove(task);
-    notifyListeners();
+  void deleteData(Task task) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _tasks.remove(task);
+      notifyListeners(); // Trigger updates after the frame is built.
+    });
   }
 }

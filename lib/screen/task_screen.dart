@@ -8,7 +8,7 @@ class TaskScreen extends StatelessWidget {
   const TaskScreen({super.key});
 
   Widget builderBottom(BuildContext context) {
-    return AddScreen();
+    return const AddScreen();
   }
 
   @override
@@ -70,7 +70,7 @@ class TaskScreen extends StatelessWidget {
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(20),
                       topLeft: Radius.circular(20))),
-              child: TaskView(), // Show tasks here
+              child: const TaskView(), // Show tasks here
             ),
           ),
         ],
